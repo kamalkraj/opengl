@@ -12,7 +12,7 @@ void setpixel(GLint xCoordinate, GLint yCoordinate)
 
 void DDA(int X1,int Y1,int X2,int Y2)
 {
-    int Length, I,i;
+    int Length, I,i;;
     float X,Y,Xinc,Yinc;
     Length = abs(X2 - X1);
     if (abs(Y2 - Y1) > Length)
