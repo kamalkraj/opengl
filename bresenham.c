@@ -26,15 +26,29 @@ void bresenham(int X1, int Y1, int X2, int Y2) {
   dx = X2 - X1;
   dy = Y2 - Y1;
   slope = dy / dx;
+  printf("%f", slope);
   e = slope - 1 / 2;
-  for (I = 0; I < dx; I++) {
-    setpixel(X, Y);
-    while (e > 0) {
-      Y = Y + 1;
-      e = e - 1;
+  if (slope < 0) {
+    for (I = 0; I < dx; I++) {
+      setpixel(X, Y);
+      while (e < 0) {
+        Y = Y - 1;
+        e = e + 1;
+      }
+      X = X + 1;
+      e = e + slope;
     }
-    X = X + 1;
-    e = e + slope;
+
+  } else {
+    for (I = 0; I < dx; I++) {
+      setpixel(X, Y);
+      while (e > 0) {
+        Y = Y + 1;
+        e = e - 1;
+      }
+      X = X + 1;
+      e = e + slope;
+    }
   }
 }
 
