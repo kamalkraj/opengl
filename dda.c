@@ -32,6 +32,7 @@ void DDA(int X1, int Y1, int X2, int Y2) {
 void drawmyline() { DDA(a, b, c, d); }
 
 void init(void) {
+
   glClearColor(1.0, 1.0, 1.0, 0.0);
   glMatrixMode(GL_PROJECTION);
   gluOrtho2D(0.0, 300.0, 0.0, 300.0);
