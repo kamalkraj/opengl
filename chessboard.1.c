@@ -24,22 +24,24 @@ void DDA(int X1, int Y1, int X2, int Y2) {
     X = X + Xinc;
     Y = Y + Yinc;
   }
-  glFlush();
 }
 
 void color(float e, float f, float g, float h) {
   int t;
-  int k;
-  for (k = 0; k < 4; k++) {
-    for (t = f; t < h; t++) {
-      DDA(e, f, g, f);
-      f = f + 1;
-    }
-    h = h + 70;
-    f = f + 35;
+  for (t = 0; t < 4; t++) {
+    float e_n = e + 35.0;
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(e, f);
+    glVertex2f(e_n, f);
+    glVertex2f(g, h);
+    glVertex2f(e, h);
+    glEnd();
+    glFlush();
+    f = f + 70.0;
+    h = h + 70.0;
   }
 }
-
 void drawmyboard() {
   int k;
   float p, q, r, s;
@@ -58,6 +60,8 @@ void drawmyboard() {
   DDA(10.0, 290.0, 290.0, 290.0);
   DDA(290.0, 290.0, 290.0, 10.0);
   for (k = 0; k < 4; k++) {
+    DDA(p, q, r, s);
+    DDA(q, p, s, r);
     q = q + 35;
     s = s + 35;
     color(a_n, b_n, j, m);
