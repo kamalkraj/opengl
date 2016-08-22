@@ -1,86 +1,98 @@
-#include <GL/glut.h>
-#include <math.h>
+#include<GL/glut.h>
 #include <stdlib.h>
+#include<math.h>
 
-void setpixel(GLint xCoordinate, GLint yCoordinate) {
-  glBegin(GL_POINTS);
-  glVertex2i(xCoordinate, yCoordinate);
-  glEnd();
+void init(void)
+{
+	glClearColor(0.0,0.0,0.0,1.0);
+	glMatrixMode(GL_PROJECTION);
+	gluOrtho2D(-50.0,850.0,-50.0,850.0);
 }
 
-void DDA(int X1, int Y1, int X2, int Y2) {
-  int I;
-  float Length;
-  float X, Y, Xinc, Yinc;
-  Length = abs(X2 - X1);
-  if (abs(Y2 - Y1) > Length)
-    Length = abs(Y2 - Y1);
-  Xinc = (X2 - X1) / (Length);
-  Yinc = (Y2 - Y1) / (Length);
-  X = X1;
-  Y = Y1;
-  for (I = 0; I < Length; I++) {
-    setpixel((X + 0.5), (Y + 0.5));
-    X = X + Xinc;
-    Y = Y + Yinc;
-  }
-  glFlush();
+void DDAline(GLint x0, GLint y0, GLint xEnd, GLint yEnd)
+{	
+	int i;
+	float Steps;
+	float x,y;float Xinc,Yinc;
+	float dx,dy;
+	dx =xEnd-x0;
+	dy =yEnd-y0;
+	if(dx>dy)
+	Steps=abs(dx);
+	else
+	Steps=abs(dy);
+	Xinc=dx/(float)Steps;
+	Yinc=dy/(float)Steps;
+	glBegin(GL_POINTS);
+		glVertex2i(x0+0.5,y0+0.5);
+	glEnd();
+	glFlush();
+	for(i=0;i<Steps;i++)
+	{
+	x0=x0+Xinc;
+	y0=y0+Yinc;
+	glBegin(GL_POINTS);
+		glVertex2i(x0+0.5,y0+0.5);
+	glEnd();
+	glFlush();
+	}
 }
 
-void color(float e, float f, float g, float h) {
-  int t;
-  int k;
-  for (k = 0; k < 4; k++) {
-    for (t = f; t < h; t++) {
-      DDA(e, f, g, f);
-      f = f + 1;
-    }
-    h = h + 70;
-    f = f + 35;
-  }
+void color(float p,float q,float r,float s,float t) 
+{   
+int i;
+glColor3f(t, t, t);
+for(i=1;(s+i)<q;i++)
+{
+DDAline(p,s+i,r,s+i);
+}
 }
 
-void drawmyboard() {
-  int k;
-  float p, q, r, s;
-  float j, m;
-  float a_n, b_n;
-  p = 10.0;
-  q = 45.0;
-  r = 290.0;
-  s = 45.0;
-  j = 80.0;
-  m = 45.0;
-  a_n = 45.0;
-  b_n = 10.0;
-  DDA(10.0, 10.0, 290.0, 10.0);
-  DDA(10.0, 10.0, 10.0, 290.0);
-  DDA(10.0, 290.0, 290.0, 290.0);
-  DDA(290.0, 290.0, 290.0, 10.0);
-  for (k = 0; k < 4; k++) {
-    q = q + 35;
-    s = s + 35;
-    color(a_n, b_n, j, m);
-    color((a_n - 35.0), (b_n + 35.0), (j - 35.0), (m + 35.0));
-    a_n = j + 35.0;
-    j = a_n + 35.0;
-  }
+
+void drawboard(void)
+{
+struct co
+{
+float x,y;
+}a,b;
+int i,j,c=0;
+glColor3f(1.0,1.0,1.0);
+glClear(GL_COLOR_BUFFER_BIT);
+DDAline(0.0,0.0,800.0,0.0);
+DDAline(0.0,0.0,0.0,800.0);
+DDAline(0.0,800.0,800.0,800.0);
+DDAline(800.0,0.0,800.0,800.0);
+a.x=0.0;a.y=100.0;
+b.x=100.0;b.y=0.0;
+for(i=0;i<8;i++)
+{
+	for(j=0;j<8;j++)
+	{
+		if(c==0){c=1;}
+		else {color(b.x-99.0,a.y,b.x,b.y,c);c=0;}
+		b.x+=100;
+			
+	}
+	if(c==0)c=1;
+	else c=0;
+	a.y+=100.0;
+	b.y+=100.0;
+	b.x=100.0;
 }
 
-void init(void) {
-  glClearColor(1.0, 1.0, 1.0, 0.0);
-  glMatrixMode(GL_PROJECTION);
-  gluOrtho2D(0.0, 300.0, 0.0, 300.0);
 }
 
-int main(int argc, char **argv) {
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-  glutInitWindowSize(500, 500);
-  glutInitWindowPosition(0, 0);
-  glutCreateWindow("chessboard");
-  init();
-  glutDisplayFunc(drawmyboard);
-  glutMainLoop();
-  return 0;
+
+int main(int argc, char**argv)
+{
+glutInit(&argc,argv);
+glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+glutInitWindowSize(400,400);
+glutInitWindowPosition(0,0);
+glutCreateWindow("chessboard");
+init();
+glutDisplayFunc(drawboard);
+glutMainLoop();
+return 0;
 }
+
