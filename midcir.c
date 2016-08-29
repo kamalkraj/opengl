@@ -22,6 +22,15 @@ void Circle()
   int d=(3/2)-r;    
   glClear(GL_COLOR_BUFFER_BIT);
   glColor3f(1,1,1);
+  glBegin(GL_LINES);
+  	glVertex2i(-1000,0);
+  	glVertex2i(1000,0);
+  glEnd();
+  glBegin(GL_LINES);
+  	glVertex2i(0,-1000);
+  	glVertex2i(0,1000);
+  glEnd();
+  
   while(x<=y)
   {
     setPixel(xCenter+x,yCenter+y);
@@ -34,9 +43,9 @@ void Circle()
     setPixel(xCenter-y,yCenter+x);
 
     if (d<0)
-  		d+=(2*x)+3;
+  		d+=(2*x)+1;
     else {
-	 	d+=(2*(x-y))+5;
+	 	d+=(2*(x-y))+1;
  		y-=1;
     	}
     x++;

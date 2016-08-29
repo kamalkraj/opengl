@@ -34,7 +34,7 @@ void DDAline(GLint x0, GLint y0, GLint xEnd, GLint yEnd)
 	glBegin(GL_POINTS);
 		glVertex2i(x0+0.5,y0+0.5);
 	glEnd();
-	glFlush();
+
 	}
 }
 
@@ -71,7 +71,7 @@ for(i=0;i<8;i++)
 		if(c==0){c=1;}
 		else {color(b.x-99.0,a.y,b.x,b.y,c);c=0;}
 		b.x+=100;
-			
+		
 	}
 	if(c==0)c=1;
 	else c=0;
@@ -79,7 +79,7 @@ for(i=0;i<8;i++)
 	b.y+=100.0;
 	b.x=100.0;
 }
-
+glFlush();
 }
 
 
